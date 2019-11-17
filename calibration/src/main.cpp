@@ -6,14 +6,12 @@ int main( ){
 
     ofGLFWWindowSettings settings;
 
-    settings.width = 1024;
-    settings.height = 768;
+    settings.setSize(1024, 768);
     settings.setPosition(ofVec2f(100, 100));
     settings.resizable = true;
     shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 
-    settings.width = PROJECTOR_RESOLUTION_X;
-    settings.height = PROJECTOR_RESOLUTION_Y;
+    settings.setSize(PROJECTOR_RESOLUTION_X, PROJECTOR_RESOLUTION_Y);
     settings.setPosition(ofVec2f(ofGetScreenWidth(), 0));
     settings.resizable = false;
     settings.decorated = false;
