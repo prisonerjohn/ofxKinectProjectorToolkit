@@ -17,13 +17,15 @@ public:
     
     vector<double> getCalibration();
 
-    void loadCalibration(string path);
-    void saveCalibration(string path);
+    bool serialize(nlohmann::json& json, const std::string& name = "calibration") const;
+	bool deserialize(const nlohmann::json& json, const std::string& name = "calibration");
+
+	bool saveCalibration(const std::filesystem::path& path) const;
+	bool loadCalibration(const std::filesystem::path& path);
     
     bool isCalibrated() {return calibrated;}
-    
+
 private:
-    
     dlib::matrix<double, 0, 11> A;
     dlib::matrix<double, 0, 1> y;
     dlib::matrix<double, 11, 1> x;

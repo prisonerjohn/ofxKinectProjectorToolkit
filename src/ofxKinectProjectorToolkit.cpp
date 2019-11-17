@@ -62,27 +62,50 @@ vector<double> ofxKinectProjectorToolkit::getCalibration()
     return coefficients;
 }
 
-void ofxKinectProjectorToolkit::loadCalibration(string path){
-    ofXml xml;
-    xml.load(path);    
-    xml.setTo("CALIBRATION");
-    for (int i=0; i<11; i++) {
-        x(i, 0) = xml.getValue<float>("COEFF"+ofToString(i));
+bool ofxKinectProjectorToolkit::serialize(nlohmann::json& json, const std::string& name) const {
+    nlohmann::json jsonCoefficients;
+    for (int i = 0; i < 11; ++i)
+    {
+        jsonCoefficients.push_back(this->x(i, 0));
     }
-    calibrated = true;
+
+    nlohmann::json jsonCalibration;
+    jsonCalibration["coefficients"] = jsonCoefficients;
+
+    json[name] = jsonCalibration;
+
+    return true;
 }
 
-void ofxKinectProjectorToolkit::saveCalibration(string path){
-    ofXml xml;
-    xml.addChild("CALIBRATION");
-    xml.setTo("CALIBRATION");
-    for (int i=0; i<11; i++) {
-        ofXml coeff;
-        coeff.addValue("COEFF"+ofToString(i), x(i, 0));
-        xml.addXml(coeff);
+bool ofxKinectProjectorToolkit::deserialize(const nlohmann::json& json, const std::string& name) {
+    if (json.count(name) == 0)
+    {
+        return false;
     }
-    xml.setToParent();
-    xml.save(path);
+
+    const auto jsonCalibration = json[name];
+    const auto jsonCoefficients = jsonCalibration["coefficients"];
+    for (int i = 0; i < 11; ++i)
+    {
+        this->x(i, 0) = jsonCoefficients[i];
+    }
+}
+
+bool ofxKinectProjectorToolkit::saveCalibration(const std::filesystem::path& path) const{
+    nlohmann::json json;
+    serialize(json);
+    return ofSavePrettyJson(path, json);
+}
+
+bool ofxKinectProjectorToolkit::loadCalibration(const std::filesystem::path& path) {
+    const auto json = ofLoadJson(path);
+    if (deserialize(json))
+    {
+        this->calibrated = true;
+        return true;
+    }
+
+    return false;
 }
 
 
