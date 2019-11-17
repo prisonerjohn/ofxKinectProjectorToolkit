@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxKinectProjectorToolkit.h"
 #include "ofxKinect.h"
-#include "ofxOpenCv.h"
 #include "ofxCv.h"
 
 
@@ -31,7 +30,7 @@ public:
     ofxKinectProjectorToolkit   kpt;
 
     ofFbo                       fboChessboard;
-    ofxCvColorImage             rgbImage;
+    ofImage                     rgbImage;
     cv::Mat                     cvRgbImage;
 
     vector<glm::vec2>           currentProjectorPoints;

@@ -10,8 +10,7 @@ void ofApp::setup(){
     kinect.init();
     kinect.open();
     
-    //rgbImage = new ofxCvColorImage();
-    rgbImage.allocate(kinect.width, kinect.height);
+    rgbImage.allocate(kinect.width, kinect.height, OF_IMAGE_COLOR);
     
     fboChessboard.allocate(PROJECTOR_RESOLUTION_X, PROJECTOR_RESOLUTION_Y, GL_RGBA);
 }
@@ -81,7 +80,7 @@ void ofApp::addPointPair() {
 void ofApp::update(){
     kinect.update();
     if (kinect.isFrameNew()) {
-        rgbImage.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        rgbImage.setFromPixels(kinect.getPixels());
         if (testing) {
             ofVec2f t = ofVec2f(min(kinect.getWidth()-1,testPoint.x), min(kinect.getHeight()-1,testPoint.y));
             ofVec3f worldPoint = kinect.getWorldCoordinateAt(t.x, t.y);
