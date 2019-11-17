@@ -5,8 +5,8 @@ ofxKinectProjectorToolkit::ofxKinectProjectorToolkit() {
     calibrated = false;
 }
 
-void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
-                                          vector<ofVec2f> pairsProjector) {
+void ofxKinectProjectorToolkit::calibrate(const vector<glm::vec3>& pairsKinect,
+                                          const vector<glm::vec2>& pairsProjector) {
     int nPairs = pairsKinect.size();
     A.set_size(nPairs*2, 11);
     y.set_size(nPairs*2, 1);
@@ -45,11 +45,11 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     calibrated = true;
 }
 
-ofVec2f ofxKinectProjectorToolkit::getProjectedPoint(ofVec3f worldPoint) {
+const glm::vec2& ofxKinectProjectorToolkit::getProjectedPoint(const glm::vec3& worldPoint) const {
     float a = x(0, 0)*worldPoint.x + x(1, 0)*worldPoint.y + x(2, 0)*worldPoint.z + x(3,0);
     float b = x(4, 0)*worldPoint.x + x(5, 0)*worldPoint.y + x(6, 0)*worldPoint.z + x(7,0);
     float c = x(8, 0)*worldPoint.x + x(9, 0)*worldPoint.y + x(10, 0)*worldPoint.z + 1;
-    ofVec2f projectedPoint(a/c, b/c);
+    glm::vec2 projectedPoint = glm::vec2(a/c, b/c);
     return projectedPoint;
 }
 

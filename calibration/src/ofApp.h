@@ -24,7 +24,7 @@ public:
     void mousePressed(int x, int y, int button);
 
     void drawChessboard(int x, int y, int chessboardSize);
-    void drawTestingPoint(ofVec2f projectedPoint);
+    void drawTestingPoint(glm::vec2 projectedPoint);
     void addPointPair();
     
     ofxKinect                   kinect;
@@ -34,14 +34,14 @@ public:
     ofxCvColorImage             rgbImage;
     cv::Mat                     cvRgbImage;
 
-    vector<ofVec2f>             currentProjectorPoints;
+    vector<glm::vec2>           currentProjectorPoints;
     vector<cv::Point2f>         cvPoints;
-    vector<ofVec3f>             pairsKinect;
-    vector<ofVec2f>             pairsProjector;
+    vector<glm::vec3>           pairsKinect;
+    vector<glm::vec2>           pairsProjector;
 
     string                      resultMessage;
     ofColor                     resultMessageColor;
-    ofVec2f                     testPoint;
+    glm::vec2                   testPoint;
 
     int                         chessboardSize;
     int                         chessboardX;

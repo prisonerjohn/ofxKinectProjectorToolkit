@@ -43,7 +43,7 @@ void ofApp::drawChessboard(int x, int y, int chessboardSize) {
 }
 
 //--------------------------------------------------------------
-void ofApp::drawTestingPoint(ofVec2f projectedPoint) {
+void ofApp::drawTestingPoint(glm::vec2 projectedPoint) {
     float ptSize = ofMap(sin(ofGetFrameNum()*0.1), -1, 1, 3, 40);
     fboChessboard.begin();
     ofBackground(255);
@@ -162,6 +162,6 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
     if (testing) {
-        testPoint.set(min(x, kinect.width-1), min(y, kinect.height-1));
+        testPoint = glm::vec2(min(x, kinect.width-1), min(y, kinect.height-1));
     }
 }

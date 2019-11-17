@@ -10,10 +10,10 @@ class ofxKinectProjectorToolkit
 public:
     ofxKinectProjectorToolkit();
     
-    void calibrate(vector<ofVec3f> pairsKinect,
-                   vector<ofVec2f> pairsProjector);
+    void calibrate(const vector<glm::vec3>& pairsKinect,
+                   const vector<glm::vec2>& pairsProjector);
     
-    ofVec2f getProjectedPoint(ofVec3f worldPoint);
+    const glm::vec2& getProjectedPoint(const glm::vec3& worldPoint) const;
     
     vector<double> getCalibration();
 
