@@ -28,9 +28,7 @@ void ofApp::setup() {
     grayThreshFar.allocate(kinect.width, kinect.height);
     
     kpt.loadCalibration("/Users/Gene/Desktop/calibration.xml");
-    
-    projector.setup("main", ofGetScreenWidth(), 0, PROJECTOR_RESOLUTION_X, PROJECTOR_RESOLUTION_Y, true);
-    
+
     // setup gui
     gui.setup("parameters");
     gui.add(nearThreshold.set("nearThresh", 230, 0, 255));
@@ -47,7 +45,7 @@ void ofApp::update() {
     
     if(kinect.isFrameNew()) {
         // process kinect depth image
-        grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        grayImage.setFromPixels(kinect.getDepthPixels());
         grayThreshNear = grayImage;
         grayThreshFar = grayImage;
         grayThreshNear.threshold(nearThreshold, true);
@@ -79,12 +77,11 @@ void ofApp::draw() {
     contourFinder.draw();
     ofTranslate(640, 0);
     ofPopMatrix();
-    
+
     gui.draw();
-    
-    // MAIN WINDOW
-    projector.begin();
-    
+}
+
+void ofApp::drawSecondWindow(ofEventArgs &args) {
     ofBackground(0);
     
     RectTracker& tracker = contourFinder.getTracker();
@@ -93,7 +90,6 @@ void ofApp::draw() {
         // get contour, label, center point, and age of contour
         vector<cv::Point> points = contourFinder.getContour(i);
         int label = contourFinder.getLabel(i);
-        ofPoint center = toOf(contourFinder.getCenter(i));
         int age = tracker.getAge(label);
         
         // map contour using calibration and draw to main window
@@ -101,14 +97,12 @@ void ofApp::draw() {
         ofFill();
         ofSetColor(blobColors[label % 12]);
         for (int j=0; j<points.size(); j++) {
-            ofVec3f worldPoint = kinect.getWorldCoordinateAt(points[j].x, points[j].y);
-            ofVec2f projectedPoint = kpt.getProjectedPoint(worldPoint);
-            ofVertex(projector.getWidth() * projectedPoint.x, projector.getHeight() * projectedPoint.y);
+            glm::vec3 worldPoint = kinect.getWorldCoordinateAt(points[j].x, points[j].y);
+            glm::vec2 projectedPoint = kpt.getProjectedPoint(worldPoint);
+            ofVertex(PROJECTOR_RESOLUTION_X * projectedPoint.x, PROJECTOR_RESOLUTION_Y * projectedPoint.y);
         }
         ofEndShape();
     }
-    
-    projector.end();
 }
 
 void ofApp::keyPressed(int key) {
