@@ -14,7 +14,6 @@ public:
                    vector<ofVec2f> pairsProjector);
     
     ofVec2f getProjectedPoint(ofVec3f worldPoint);
-    vector<ofVec2f> getProjectedContour(vector<ofVec3f> *worldPoints);
     
     vector<double> getCalibration();
 
