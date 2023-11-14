@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "matrix.h"
-#include "matrix_qr.h"
+#include <matrix/matrix.h>
+#include <matrix/matrix_qr.h>
 
 
 class ofxKinectProjectorToolkit
@@ -10,12 +10,12 @@ class ofxKinectProjectorToolkit
 public:
     ofxKinectProjectorToolkit();
     
-    void calibrate(const vector<glm::vec3>& pairsKinect,
-                   const vector<glm::vec2>& pairsProjector);
+    void calibrate(const std::vector<glm::vec3>& pairsKinect,
+                   const std::vector<glm::vec2>& pairsProjector);
     
     const glm::vec2& getProjectedPoint(const glm::vec3& worldPoint) const;
     
-    vector<double> getCalibration();
+    std::vector<double> getCalibration();
 
     bool serialize(nlohmann::json& json, const std::string& name = "calibration") const;
 	bool deserialize(const nlohmann::json& json, const std::string& name = "calibration");

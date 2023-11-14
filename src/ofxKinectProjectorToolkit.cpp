@@ -5,8 +5,8 @@ ofxKinectProjectorToolkit::ofxKinectProjectorToolkit() {
     calibrated = false;
 }
 
-void ofxKinectProjectorToolkit::calibrate(const vector<glm::vec3>& pairsKinect,
-                                          const vector<glm::vec2>& pairsProjector) {
+void ofxKinectProjectorToolkit::calibrate(const std::vector<glm::vec3>& pairsKinect,
+                                          const std::vector<glm::vec2>& pairsProjector) {
     int nPairs = pairsKinect.size();
     A.set_size(nPairs*2, 11);
     y.set_size(nPairs*2, 1);
@@ -53,9 +53,9 @@ const glm::vec2& ofxKinectProjectorToolkit::getProjectedPoint(const glm::vec3& w
     return projectedPoint;
 }
 
-vector<double> ofxKinectProjectorToolkit::getCalibration()
+std::vector<double> ofxKinectProjectorToolkit::getCalibration()
 {
-    vector<double> coefficients;
+    std::vector<double> coefficients;
     for (int i=0; i<11; i++) {
         coefficients.push_back(x(i, 0));
     }
